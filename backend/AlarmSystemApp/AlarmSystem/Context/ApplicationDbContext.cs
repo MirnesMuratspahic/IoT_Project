@@ -12,6 +12,7 @@ namespace AlarmSystem.Context
         public DbSet<User> Users { get; set; }
         public DbSet<Device> Devices { get; set; }
         public DbSet<UserDevice> UserDevices { get; set; }
+        public DbSet<DeviceResponse> DeviceResponses { get; set; }
 
     }
 

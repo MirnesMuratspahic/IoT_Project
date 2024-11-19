@@ -44,5 +44,14 @@ namespace AlarmSystem.Controllers
                 return BadRequest(error.Name);
             return Ok(error.Name);
         }
+
+        [HttpPost("ReciveDeviceResponse")]
+        public async Task<IActionResult> ReciveDeviceResponse(DeviceResponse deviceResponse)
+        {
+            var error = await deviceService.ReciveDeviceResponse(deviceResponse);
+            if (error.Status == true)
+                return BadRequest(error.Name);
+            return Ok(error.Name);
+        }
     }
 }

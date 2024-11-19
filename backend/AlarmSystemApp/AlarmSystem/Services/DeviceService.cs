@@ -102,6 +102,31 @@ namespace AlarmSystem.Services
 
         }
 
+        public async Task<ErrorProvider> ReciveDeviceResponse(DeviceResponse deviceResponse)
+        {
+            if(deviceResponse == null) 
+                return defaultError;
+
+            var deviceFromDatabase = await dbContext.Devices.FirstOrDefaultAsync(x => x.DeviceId == deviceResponse.DeviceId);
+
+            if (deviceFromDatabase == null)
+                return deviceNotFoundError;
+
+            await dbContext.DeviceResponses.AddAsync(deviceResponse);
+            await dbContext.SaveChangesAsync();
+
+            error = new ErrorProvider()
+            {
+                Status = false,
+                Name = "Data recived!"
+            };
+
+            return error;
+        }
+
+        
+        //public async Task<(ErrorProvider, DeviceResponse)> GetLastResponse(string deviceId)
+
     }
 
 }
