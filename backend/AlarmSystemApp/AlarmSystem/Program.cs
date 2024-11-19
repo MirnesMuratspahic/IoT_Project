@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IDeviceService, DeviceService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("UsersApiConnectionString")));

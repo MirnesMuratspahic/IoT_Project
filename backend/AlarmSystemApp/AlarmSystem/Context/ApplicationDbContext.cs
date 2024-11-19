@@ -1,5 +1,6 @@
 ﻿using AlarmSystem.Models;
 using AlarmSystem.Models.DTO;
+using AlarmSystem.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace AlarmSystem.Context
@@ -9,6 +10,8 @@ namespace AlarmSystem.Context
         public ApplicationDbContext(DbContextOptions options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Device> Devices { get; set; }
+        public DbSet<UserDevice> UserDevices { get; set; }
 
     }
 
