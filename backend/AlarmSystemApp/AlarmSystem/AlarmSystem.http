@@ -1,0 +1,6 @@
+@AlarmSystem_HostAddress = http://localhost:5031
+
+GET {{AlarmSystem_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34723.18
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlarmSystem", "AlarmSystem\AlarmSystem.csproj", "{D46542C2-9569-44F5-BED6-ADD4A4DD06FB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D46542C2-9569-44F5-BED6-ADD4A4DD06FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D46542C2-9569-44F5-BED6-ADD4A4DD06FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D46542C2-9569-44F5-BED6-ADD4A4DD06FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D46542C2-9569-44F5-BED6-ADD4A4DD06FB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5A0A85BD-FE31-4413-A132-C15C12F51D66}
+	EndGlobalSection
+EndGlobal
