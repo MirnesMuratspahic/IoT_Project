@@ -137,6 +137,12 @@ namespace AlarmSystem.Services
                 Name = "Data recived!"
             };
 
+            var dataFromDatabase =  dbContext.DeviceResponses.Where(x => x.DeviceId == deviceResponse.DeviceId).Count();
+
+            if(dataFromDatabase >= 100)
+                await DeleteData(deviceResponse.DeviceId);
+
+
             var userDevice = await dbContext.UserDevices.Where(x=>x.Device.DeviceId == deviceResponse.DeviceId).FirstOrDefaultAsync();
             if (userDevice == null)
                 return deviceNotFoundError;
@@ -157,6 +163,17 @@ namespace AlarmSystem.Services
 
 
             return error;
+        }
+
+        private async Task DeleteData(Guid deviceId)
+        {
+            var dataFromDatabase = await dbContext.DeviceResponses.Where(x => x.DeviceId == deviceId).ToListAsync();
+            if(dataFromDatabase.Count > 0) 
+            {
+                dbContext.RemoveRange(dataFromDatabase);
+                await dbContext.SaveChangesAsync();
+            }
+
         }
 
         
