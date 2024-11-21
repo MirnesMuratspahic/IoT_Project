@@ -12,6 +12,8 @@ namespace AlarmSystem.Models
         [Required]
         public float Temperature { get; set; }
         [Required]
+        public int MotionDetected { get; set; }
+        [Required]
         public DateTime ReadingDateTime { get; set; }
 
     }

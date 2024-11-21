@@ -53,5 +53,12 @@ namespace AlarmSystem.Controllers
                 return BadRequest(error.Name);
             return Ok(error.Name);
         }
+
+        //[HttpGet("Email")]
+        //public async Task<IActionResult> SendEmail()
+        //{
+        //    var error = await deviceService.SendEmail();
+        //    return Ok(error);
+        //}
     }
 }
