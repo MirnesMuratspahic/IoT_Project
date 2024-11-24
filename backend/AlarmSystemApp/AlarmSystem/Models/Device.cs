@@ -5,7 +5,6 @@ namespace AlarmSystem.Models
 {
     public class Device
     {
-        [JsonIgnore]
         [Required]
         [Key]public Guid DeviceId { get; set; }
         [Required]

@@ -1,0 +1,84 @@
+<body>
+  <div
+    class="container vh-100 d-flex justify-content-center align-items-center"
+  >
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onLoginSubmit()"
+      class="col-md-6 bg-black bg-opacity-75 backdrop-blur p-4 rounded shadow"
+    >
+      <h2 class="text-center text-white fw-bold mb-4">Prijava</h2>
+
+      <div class="form-group mb-3">
+        <label for="email">Email:</label>
+        <input
+          id="email"
+          formControlName="email"
+          type="email"
+          class="form-control"
+          placeholder="Unesite svoj email"
+        />
+        <div
+          *ngIf="
+            loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+          "
+        >
+          <small
+            *ngIf="loginForm.get('email')?.errors?.['required']"
+            class="text-danger"
+            >Email je obavezan.</small
+          >
+          <small
+            *ngIf="loginForm.get('email')?.errors?.['email']"
+            class="text-danger"
+            >Neispravan format email-a.</small
+          >
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="password">Lozinka:</label>
+        <input
+          id="password"
+          formControlName="password"
+          type="password"
+          class="form-control"
+          placeholder="Unesite svoju lozinku"
+        />
+        <div
+          *ngIf="
+            loginForm.get('password')?.invalid &&
+            loginForm.get('password')?.touched
+          "
+        >
+          <small class="text-danger">Lozinka je obavezna.</small>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="btn w-30 mx-auto d-block fw-medium"
+        [disabled]="loginForm.invalid"
+        style="background-color: #7091e6"
+      >
+        Prijavi se
+      </button>
+
+      <div *ngIf="errorMessage" class="text-danger text-center mt-3">
+        {{ errorMessage }}
+      </div>
+
+      <div class="text-center mt-3">
+        <p class="text-white">
+          Nemate račun?
+          <a
+            class="text-primary fw-semibold"
+            style="cursor: pointer"
+            (click)="onRegisterPage()"
+            >Registrujte se</a
+          >
+        </p>
+      </div>
+    </form>
+  </div>
+</body>

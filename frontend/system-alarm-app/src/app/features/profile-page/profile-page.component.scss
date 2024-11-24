@@ -1,0 +1,39 @@
+$primary-color: #3498db;
+
+.form-label {
+  text-align: left;
+  display: block;
+}
+
+.card-1 {
+  width: 28rem;
+  border: none;
+  border-radius: 10px;
+  background-color: rgb(27, 27, 27);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+span{
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.card{
+  border: none !important;
+}
+
+.card-body{
+  background-color: rgb(27, 27, 27);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.image img {
+  border-radius: 50%;
+}
+
+.card-body-2 {
+  margin-top: 15px;
+}
+

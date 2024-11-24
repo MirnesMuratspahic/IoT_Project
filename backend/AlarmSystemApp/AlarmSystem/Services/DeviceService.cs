@@ -46,23 +46,38 @@ namespace AlarmSystem.Services
         }
 
 
-        public async Task<ErrorProvider> AddDevice(Device device)
+        public async Task<(ErrorProvider, Device)> AddDevice()
         {
-            if(device == null)
-                return defaultError;
 
+            var device = new Device()
+            {
+                DeviceId = Guid.NewGuid(),
+                Name = await GenerateDeviceName(),
+                Status = "Inactive",
+                RegisteredAt = DateTime.Now
+            };
 
             await dbContext.Devices.AddAsync(device);
             await dbContext.SaveChangesAsync();
-
-            error = new ErrorProvider()
-            {
-                Status = false,
-                Name = "Device successfully added!"
-            };
             
-            return error;
+            return (error, device);
 
+        }
+
+        private async Task<string> GenerateDeviceName()
+        {
+            var lastDevice = await dbContext.Devices
+                .Where(d => d.Name.StartsWith("Temperature"))
+                .OrderByDescending(d => d.Name)
+                .FirstOrDefaultAsync();
+
+            if (lastDevice != null)
+            {
+                var lastNumber = int.Parse(lastDevice.Name.Split(' ')[1]);
+                return $"Temperature {lastNumber + 1}";
+            }
+
+            return "Temperature 1";
         }
 
         //public async Task<string> SendEmail()
@@ -143,7 +158,7 @@ namespace AlarmSystem.Services
                 await DeleteData(deviceResponse.DeviceId);
 
 
-            var userDevice = await dbContext.UserDevices.Where(x=>x.Device.DeviceId == deviceResponse.DeviceId).FirstOrDefaultAsync();
+            var userDevice = await dbContext.UserDevices.Include(x => x.User).Include(x => x.Device).Where(x=>x.Device.DeviceId == deviceResponse.DeviceId).FirstOrDefaultAsync();
             if (userDevice == null)
                 return deviceNotFoundError;
 
@@ -176,8 +191,52 @@ namespace AlarmSystem.Services
 
         }
 
-        
-        //public async Task<(ErrorProvider, DeviceResponse)> GetLastResponse(string deviceId)
+
+        public async Task<(ErrorProvider, DeviceResponse)> GetLastResponse(Guid deviceId)
+        {
+            if (deviceId == null)
+                return (defaultError, null);
+
+            var deviceFromDatabase = await dbContext.Devices.FirstOrDefaultAsync(x => x.DeviceId == deviceId);
+
+            if (deviceFromDatabase == null)
+                return (deviceNotFoundError, null);
+
+            var lastResponse = await dbContext.DeviceResponses.OrderByDescending(x => x.ReadingDateTime).FirstOrDefaultAsync(x => x.DeviceId == deviceId);
+
+            if(lastResponse  == null)
+            {
+                error = new ErrorProvider()
+                {
+                    Status = true,
+                    Name = "None response in database!"
+                };
+                return (error, null);
+            }
+
+            return (error, lastResponse);
+
+
+        }
+
+        public async Task<(ErrorProvider, List<Device>)> GetUserDevices(string email)
+        {
+            if(email == null)
+                return (defaultError, null);
+
+            var userFromDatabase = await dbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+
+            if(userFromDatabase == null)
+                return (userNotFoundError, null);
+
+            var userDevices = await dbContext.UserDevices.Where(x=>x.User.Email == email).Select(x=> x.Device).ToListAsync();
+
+            if (userDevices == null)
+                return (deviceNotFoundError, null);
+
+            return (error, userDevices);
+
+        }
 
     }
 

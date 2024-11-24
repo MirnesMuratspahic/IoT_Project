@@ -1,0 +1,26 @@
+<div class="pos-f-t">
+  <div
+    class="collapse"
+    [ngClass]="{ show: !isNavbarCollapsed }"
+    id="navbarToggleExternalContent"
+  >
+    <div class="bg-dark p-4">
+      <ul class="navbar-nav">
+        <li *ngFor="let link of navbarLinks" class="nav-item">
+          <a
+            class="nav-link text-white"
+            [routerLink]="link.href"
+            (click)="handleLinkClick(link)"
+          >
+            {{ link.title }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <nav class="navbar navbar-dark bg-dark w-100">
+    <button class="navbar-toggler m-2" type="button" (click)="toggleNavbar()">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </nav>
+</div>

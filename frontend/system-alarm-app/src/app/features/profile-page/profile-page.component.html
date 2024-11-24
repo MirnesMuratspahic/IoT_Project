@@ -1,0 +1,89 @@
+<body>
+  <div>
+    <!-- Navbar -->
+    <app-navbar></app-navbar>
+  </div>
+
+  <div class="container mt-5">
+    <!-- User Informations -->
+    <div *ngIf="user" class="d-flex flex-column align-items-center">
+      <div class="card-1 p-3 text-center w-100" style="max-width: 500px;">
+        <div class="image">
+          <img
+            [src]="user.imageUrl ? user.imageUrl : 'https://cdn-icons-png.flaticon.com/512/10337/10337609.png'"
+            alt="Profilna slika"
+            class="rounded-circle mx-auto mt-3"
+            style="width: 150px; height: 150px; object-fit: cover"
+          />
+        </div>
+        <h4 class="mt-3 text-white">{{ user.firstName }} {{ user.lastName }}</h4>
+        <div class="card-body-2">
+          <div class="mb-3">
+            <label for="email" class="form-label text-white"><strong>Email:</strong></label>
+            <input
+              id="email"
+              type="text"
+              [(ngModel)]="user.email"
+              class="form-control"
+              readonly
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Devices Section -->
+    <div class="mt-4">
+      <div *ngFor="let device of devices" class="card mb-5 w-100">
+        <div class="card-header bg-warning text-white">
+          <h4>{{ device.name }}</h4>
+        </div>
+        <div class="card-body">
+          <div *ngIf="deviceResponses.get(device.deviceId) as details">
+            <!-- Temperature -->
+            <div class="mb-3 d-flex align-items-center">
+              <label for="temperature-{{ device.deviceId }}" class="form-label text-white flex-shrink-0"><strong>Temperature:</strong></label>
+              <input
+                id="temperature-{{ device.deviceId }}"
+                type="text"
+                [value]="details.temperature + ' °C'"
+                class="form-control w-100 ms-4"
+                readonly
+              />
+            </div>
+            <!-- Motion -->
+            <div class="mb-3 d-flex align-items-center">
+              <label for="motion-{{ device.deviceId }}" class="form-label text-white flex-shrink-0"><strong>Motion status:</strong></label>
+              <input
+                id="motion-{{ device.deviceId }}"
+                type="text"
+                [value]="details.motionDetected ? 'Detektovan pokret' : 'Nema pokreta'"
+                class="form-control w-100 ms-3"
+                readonly
+              />
+            </div>
+            <!-- Date and Time -->
+            <div class="mb-3 d-flex align-items-center">
+              <label for="readingDate-{{ device.deviceId }}" class="form-label text-white flex-shrink-0"><strong>Reading date:</strong></label>
+              <input
+                id="readingDate-{{ device.deviceId }}"
+                type="text"
+                [value]="details.readingDateTime | date: 'dd.MM.yyyy HH:mm:ss'"
+                class="form-control w-100 ms-4"
+                readonly
+              />
+            </div>
+          </div>
+          <div *ngIf="!deviceResponses.get(device.deviceId)">
+            <p>Učitavanje podataka...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State for User Data -->
+  <div *ngIf="!user" class="d-flex justify-content-center align-items-center vh-100">
+    <p>Učitavanje podataka o korisniku...</p>
+  </div>
+</body>

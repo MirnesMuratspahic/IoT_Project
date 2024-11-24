@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AlarmSystem.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class DeviceController : ControllerBase
     {
@@ -27,13 +27,13 @@ namespace AlarmSystem.Controllers
         }
 
 
-        [HttpPost("AddDevice")]
-        public async Task<IActionResult> AddDevice(Device device)
+        [HttpGet("AddDevice")]
+        public async Task<IActionResult> AddDevice()
         {
-            var error = await deviceService.AddDevice(device);
+            var (error, device) = await deviceService.AddDevice();
             if (error.Status == true)
                 return BadRequest(error.Name);
-            return Ok(error.Name);  
+            return Ok(device);  
         }
 
         [HttpPost("ConnectDevice")]
@@ -60,5 +60,24 @@ namespace AlarmSystem.Controllers
         //    var error = await deviceService.SendEmail();
         //    return Ok(error);
         //}
+
+        [HttpPost("GetLastResponse")]
+        public async Task<IActionResult> GetLastResponse([FromBody] Guid deviceId)
+        {
+            var (error, lastResponse) = await deviceService.GetLastResponse(deviceId);
+            if (error.Status == true)
+                return BadRequest(error.Name);
+            return Ok(lastResponse);
+        }
+
+        [HttpPost("GetUserDevices")]
+        public async Task<IActionResult> GetUserDevices([FromBody] string email)
+        {
+            var (error, devices) = await deviceService.GetUserDevices(email);
+            if (error.Status == true)
+                return BadRequest(error.Name);
+            return Ok(devices);
+        }
+
     }
 }
