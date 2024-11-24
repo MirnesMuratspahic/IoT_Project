@@ -11,7 +11,7 @@ DHT dht(DHTPIN, DHTTYPE); // Kreiranje objekta senzora
 
 const char* ssid = "UG99DB";      
 const char* password = "BD3C4877";    
-const char* deviceId = "D8BD6A6A-F3DB-45EE-34F4-08DD08BEAF44";  // Jedinstveni device ID
+const char* deviceId = "9553E527-6B5C-41B3-8784-A2C273F57BA4";  // Jedinstveni device ID
 
 void setup() {
   Serial.begin(115200);
@@ -55,7 +55,7 @@ void loop() {
     HTTPClient http;
 
     // URL na koji šaljemo podatke
-    String serverUrl = "http://192.168.0.9:7155/api/Device/ReciveDeviceResponse";
+    String serverUrl = "http://192.168.0.9:7155/Device/ReciveDeviceResponse";
     http.begin(client, serverUrl); // Početak HTTP konekcije
     http.addHeader("Content-Type", "application/json");
 

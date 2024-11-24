@@ -79,5 +79,14 @@ namespace AlarmSystem.Controllers
             return Ok(devices);
         }
 
+        [HttpDelete("DeleteDevice/{deviceId}")]
+        public async Task<IActionResult> DeleteDevice([FromRoute] Guid deviceId)
+        {
+            var error= await deviceService.DeleteDevice(deviceId);
+            if (error.Status == true)
+                return BadRequest(error.Name);
+            return Ok(new {message = error.Name });
+        }
+
     }
 }

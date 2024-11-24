@@ -12,5 +12,6 @@ namespace AlarmSystem.Services.Interfaces
         //Task<string> SendEmail();
         Task<(ErrorProvider, DeviceResponse)> GetLastResponse(Guid deviceId);
         Task<(ErrorProvider, List<Device>)> GetUserDevices(string email);
+        Task<ErrorProvider> DeleteDevice(Guid deviceId);
     }
 }

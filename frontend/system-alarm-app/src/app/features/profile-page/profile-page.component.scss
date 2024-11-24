@@ -27,8 +27,6 @@ span{
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-
-
 .image img {
   border-radius: 50%;
 }
@@ -37,3 +35,32 @@ span{
   margin-top: 15px;
 }
 
+.btn-outline-danger {
+  background-color: #dc3545; 
+  color: white;               
+  border: 1px solid #dc3545;  
+}
+
+.btn-outline-danger:hover {
+  background-color: transparent; 
+  color: #dc3545;                 
+  border: 1px solid #dc3545;      
+}
+
+#device-list{
+  display: flex;
+}
+
+#device-list h5{
+  font-size: 20px;
+}
+
+@media (max-width: 800px) {
+  #device-list {
+    display: block;
+  }
+
+  #device-list h5{
+    font-size: 14px;
+  }
+}

@@ -118,9 +118,18 @@ namespace AlarmSystem.Services
                 RegistrationDateTime = DateTime.Now
             };
 
+            var deviceResponse = new DeviceResponse()
+            {
+                DeviceId = dtoUserDevice.DeviceId,
+                Temperature = -100,
+                MotionDetected = 0,
+                ReadingDateTime = DateTime.MinValue
+            };
+
             deviceFromDatabase.Status = "Active";
 
             await dbContext.UserDevices.AddAsync(userDevice);
+            await dbContext.DeviceResponses.AddAsync(deviceResponse);
             await dbContext.SaveChangesAsync();
 
             error = new ErrorProvider()
@@ -142,6 +151,8 @@ namespace AlarmSystem.Services
 
             if (deviceFromDatabase == null)
                 return deviceNotFoundError;
+
+            deviceResponse.ReadingDateTime = DateTime.Now;
 
             await dbContext.DeviceResponses.AddAsync(deviceResponse);
             await dbContext.SaveChangesAsync();
@@ -236,6 +247,29 @@ namespace AlarmSystem.Services
 
             return (error, userDevices);
 
+        }
+
+        public async Task<ErrorProvider> DeleteDevice(Guid deviceId)
+        {
+            if (deviceId == null)
+                return defaultError;
+
+            var deviceFromDatabase = await dbContext.UserDevices.Include(x=>x.User).Include(x=>x.Device).FirstOrDefaultAsync(x=>x.Device.DeviceId == deviceId);
+
+            if (deviceFromDatabase == null)
+                return deviceNotFoundError;
+
+            deviceFromDatabase.Device.Status = "Inactive";
+            dbContext.UserDevices.Remove(deviceFromDatabase);
+            await dbContext.SaveChangesAsync();
+
+            error = new ErrorProvider()
+            {
+                Status = false,
+                Name = "Successfully removed!"
+            };
+
+            return error;
         }
 
     }
