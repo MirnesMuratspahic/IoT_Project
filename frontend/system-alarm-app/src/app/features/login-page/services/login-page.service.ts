@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -14,15 +14,18 @@ export class LoginPageService {
 
   constructor(private http: HttpClient) {}
 
-  login(data: LoginData): Observable<LoginResponse> {
-    return this.http.post(this.apiUrl, data, { responseType: 'text' }).pipe(
-      map((response: string) => {
-        return { token: response } as LoginResponse;
-      }),
-      catchError((error) => {
-        console.error('Login error:', error);
-        return throwError(() => new Error('Login failed'));
-      })
-    );
+  login(data: LoginData): Observable<string> {
+    const headers = { 'Content-Type': 'application/json' };
+    return this.http.post<string>(this.apiUrl, data, {headers} ).pipe(
+      catchError(this.handleError));
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.status === 400 && error.error && error.error.name) {
+      console.error('Login error:', error.error.name);
+      return throwError(() => new Error(error.error.name));
+    } else {
+      return throwError(() => new Error('An unexpected error occurred.'));
+    }
   }
 }

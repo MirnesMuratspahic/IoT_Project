@@ -16,7 +16,9 @@ namespace AlarmSystem.Models
         [Required]
         public string LastName { get; set; } = string.Empty;
         [Required]
-        public string PhoneNumber {  get; set; } = string.Empty;    
+        public string PhoneNumber {  get; set; } = string.Empty;
+        [Required]
+        public bool EmailConfirmed { get; set; } = false;
         [Required]
         public string ImageUrl { get; set; } = string.Empty;
         [JsonIgnore]

@@ -1,5 +1,5 @@
 body {
-  background-image: url("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/de70e32a-639d-4aec-9894-c001c53e9875/da5t6xa-a95a8639-343f-4b08-9e04-8281815d1153.jpg/v1/fill/w_1131,h_707,q_70,strp/city_street_night_background_wallpaper_by_emre0614_da5t6xa-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTYwMCIsInBhdGgiOiJcL2ZcL2RlNzBlMzJhLTYzOWQtNGFlYy05ODk0LWMwMDFjNTNlOTg3NVwvZGE1dDZ4YS1hOTVhODYzOS0zNDNmLTRiMDgtOWUwNC04MjgxODE1ZDExNTMuanBnIiwid2lkdGgiOiI8PTI1NjAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.0tzuEAa3eaHSIwV8obIT6pUbuSO3TBymc-QQpb7sZD4");
+  background-image: url("https://img.freepik.com/free-vector/laptop-with-program-code-isometric-icon-software-development-programming-applications-dark-neon_39422-971.jpg?t=st=1732661354~exp=1732664954~hmac=6d4936e6f9ca507d49718dbf206d773baffd057aff69e08153ca5b77ae64a317&w=1380");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -20,4 +20,15 @@ label {
 .form-group {
   width: 70%;
   margin: auto;
+}
+
+#submit{
+  background-color: white;
+  border-radius: 0px;
+}
+
+#submit:hover{
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
 }

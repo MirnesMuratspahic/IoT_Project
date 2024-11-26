@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { LoginPageService } from './services/login-page.service';
 import { LoginData } from './models/login-data.model';
+import { error } from 'console';
 
 @Component({
   selector: 'app-login',
@@ -36,17 +37,17 @@ export class LoginPageComponent {
     if (this.loginForm.valid) {
       const loginData: LoginData = this.loginForm.value;
 
-      try {
-        const response = await this.loginService.login(loginData).toPromise();
-        if (response) {
-          console.log('Login successful', response);
-          localStorage.setItem('token', response.token);
+      this.loginService.login(loginData).subscribe(
+        (data) => {
+          console.log('Login successful', data);
+          localStorage.setItem('token', data);
           this.errorMessage = null;
           this.router.navigate(['/profile']);
+        },
+        (error) => {
+          this.errorMessage = error.message;
         }
-      } catch (error: any) {
-        this.errorMessage = error.message;
-      }
+      )
     }
   }
 

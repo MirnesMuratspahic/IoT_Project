@@ -46,7 +46,8 @@ export class RegisterPageComponent implements OnInit {
         next: (response) => {
           console.log(response);
           this.errorMessage = null;
-          this.router.navigate(['']);
+          localStorage.setItem('userEmail', userData.email);
+          this.router.navigate(['/code']);
         },
         error: (error) => {
           console.error('Error registering user', error);

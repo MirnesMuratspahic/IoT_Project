@@ -1,0 +1,43 @@
+<body>
+
+
+<div class="verify-email-container">
+    <h2 class="text-center">Email Confirmation</h2>
+    <p class="text-center">Please enter the 6-digit code sent to your email:</p>
+  
+    <form (ngSubmit)="onSubmit()" #icodeForm="ngForm" class="icode-form">
+      <div class="form-group">
+        <label for="icode" class="form-label">Confirmation Code</label>
+        <input
+          type="text"
+          id="icode"
+          name="icode"
+          class="form-control"
+          maxlength="6"
+          minlength="6"
+          required
+          pattern="[0-9]*"
+          [(ngModel)]="icode"
+          #icodeInput="ngModel"
+        />
+        <div class="invalid-feedback" *ngIf="icodeInput.invalid && icodeInput.touched">
+          <p *ngIf="icodeInput.errors?.['required']">Code is required.</p>
+          <p *ngIf="icodeInput.errors?.['minlength'] || icodeInput.errors?.['maxlength']">
+            Code must be exactly 6 digits.
+          </p>
+          <p *ngIf="icodeInput.errors?.['pattern']">Code must contain only numbers.</p>
+        </div>
+      </div>
+  
+      <button
+        type="submit"
+        class="btn btn-primary w-100 mt-3"
+        [disabled]="icodeForm.invalid"
+      >
+        Confirm
+      </button>
+    </form>
+  
+  </div>
+
+</body>

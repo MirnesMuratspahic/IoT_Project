@@ -59,6 +59,40 @@ namespace AlarmSystem.Services
                 
             }
         }
+
+        public async Task SendEmailWithCode(string code, string email)
+        {
+            MailMessage mail = new MailMessage();
+
+            string message = "Poštovani, \n" + "\n" + 
+                            $"Vaš kod za potvrdu email adrese je sljedeći: {code} \n" + "\n" +
+                            "Link za potvrdu koda: http://localhost:4200/code \n" +
+                            "S poštovanjem, \n" +
+                            "AlarmSystem";
+
+            mail.From = new MailAddress(configuration["EmailAccountInformations:Email"]);
+            mail.To.Add(email);
+            mail.Subject = "Potvrda email adrese";
+            mail.Body = message;
+
+
+
+            SmtpClient smtpServer = new SmtpClient("smtp.gmail.com");
+            smtpServer.Port = 587;
+            smtpServer.Credentials = new NetworkCredential(configuration["EmailAccountInformations:Email"], configuration["EmailAccountInformations:Password"]);
+            smtpServer.EnableSsl = true;
+
+            try
+            {
+                await smtpServer.SendMailAsync(mail);
+            }
+            catch (Exception)
+            {
+
+            }
+
+
+        }
     }
 
 }

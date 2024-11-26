@@ -15,14 +15,17 @@ namespace AlarmSystem.Services
     public class UserService : IUserService
     {
         public ApplicationDbContext DbContext { get; set; }
+        public IEmailService emailService { get; set; }
         public IConfiguration Configuration { get; set; }
         public ErrorProvider error = new ErrorProvider() { Status = false };
         public ErrorProvider defaultError = new ErrorProvider() { Status = true, Name = "The property must not be null" };
+        public ErrorProvider userNotFoundError = new ErrorProvider() { Status = true, Name = "User not found!" };
 
-        public UserService(ApplicationDbContext _context, IConfiguration _configuration) 
+        public UserService(ApplicationDbContext _context, IConfiguration _configuration, IEmailService _emailService) 
         {
             DbContext = _context;
             Configuration = _configuration;
+            emailService = _emailService;
         }
 
         public async Task<ErrorProvider> UserRegistration(dtoUserRegistration user)
@@ -59,6 +62,18 @@ namespace AlarmSystem.Services
             await DbContext.SaveChangesAsync();
             var token = CreateToken(newUser);
 
+            var generatedCode = await GenerateCode();
+            var userCode = new UserCode()
+            {
+                Email = user.Email,
+                Code = generatedCode,
+                CreatedDate = DateTime.Now,
+            };
+            await DbContext.UserCodes.AddAsync(userCode);
+            await DbContext.SaveChangesAsync(); 
+            await emailService.SendEmailWithCode(generatedCode, user.Email);
+
+
             error = new ErrorProvider()
             {
                 Status = false,
@@ -67,6 +82,58 @@ namespace AlarmSystem.Services
 
             return error;
 
+        }
+
+        public async Task<ErrorProvider> AcceptUserCode(dtoUserCode userCode)
+        {
+            if (userCode == null)
+                return defaultError;
+
+            var codeFromDatabase = (await DbContext.UserCodes
+                                .Where(x => x.Email == userCode.Email && x.Code == userCode.Code)
+                                .ToListAsync())
+                                .DistinctBy(x => x.CreatedDate)
+                                .FirstOrDefault();
+
+            if (codeFromDatabase == null)
+            {
+                error = new ErrorProvider()
+                {
+                    Status = true,
+                    Name = "There is no same code in database!"
+                };
+                return error;   
+            }
+
+            if(codeFromDatabase.Code == userCode.Code)
+            {
+                var userFromDatabase = await DbContext.Users.FirstOrDefaultAsync(x => x.Email == userCode.Email);
+                if(userFromDatabase == null) { return userNotFoundError; }
+                userFromDatabase.EmailConfirmed = true;
+                await DbContext.SaveChangesAsync();
+
+                error = new ErrorProvider()
+                {
+                    Status = false,
+                    Name = "Code accepted!"
+                };
+                return error;
+            }
+
+            error = new ErrorProvider()
+            {
+                Status = false,
+                Name = "Wrong code!"
+            };
+
+            return error;
+
+        }
+
+        private async Task<string> GenerateCode()
+        {
+            Random random = new Random();
+            return random.Next(100000, 1000000).ToString();
         }
 
         public async Task<(ErrorProvider, string)> UserLogin(dtoUserLogin user)
@@ -81,7 +148,7 @@ namespace AlarmSystem.Services
                 error = new ErrorProvider()
                 {
                     Status = true,
-                    Name = "The data that you have entered is incorrect."
+                    Name = "Invalid data!"
                 };
                 return (error, null);
             }
@@ -93,6 +160,16 @@ namespace AlarmSystem.Services
                 {
                     Status = true,
                     Name = "The data that you have entered is incorrect."
+                };
+                return (error, null);
+            }
+
+            if(userFromDatabase.EmailConfirmed == false)
+            {
+                error = new ErrorProvider()
+                {
+                    Status = true,
+                    Name = "Email not confirmed!"
                 };
                 return (error, null);
             }

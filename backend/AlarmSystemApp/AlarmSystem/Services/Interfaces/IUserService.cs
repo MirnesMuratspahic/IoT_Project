@@ -10,6 +10,7 @@ namespace AlarmSystem.Services.Interfaces
         Task<(ErrorProvider, string)> UserLogin(dtoUserLogin user);
         Task<(ErrorProvider, User)> GetUserInformations(string email);
         Task<ErrorProvider> UpdateUserInformations(dtoUserInformations dtoUserInformation);
+        Task<ErrorProvider> AcceptUserCode(dtoUserCode userCode);
 
     }
 }

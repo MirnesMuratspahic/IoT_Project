@@ -29,7 +29,7 @@ namespace AlarmSystem.Controllers
         {
             var (errorStatus , token) = await userService.UserLogin(user);
             if (errorStatus.Status == true)
-                return BadRequest(errorStatus.Name);
+                return BadRequest(new {name = errorStatus.Name });
             return Ok(token);
 
         }
@@ -51,6 +51,15 @@ namespace AlarmSystem.Controllers
             if(errorStatus.Status == true)  
                 return BadRequest(errorStatus.Name);
             return Ok(errorStatus.Name);
+        }
+
+        [HttpPost("AcceptUserCode")]
+        public async Task<IActionResult> AcceptUserCode(dtoUserCode dtoUserCode)
+        {
+            var errorStatus = await userService.AcceptUserCode(dtoUserCode);
+            if (errorStatus.Status == true)
+                return BadRequest(new { name = errorStatus.Name });
+            return Ok(new { name = errorStatus.Name });
         }
 
 

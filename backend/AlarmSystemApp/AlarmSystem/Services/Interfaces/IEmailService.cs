@@ -3,5 +3,6 @@
     public interface IEmailService
     {
         Task SendEmail(string message, string email);
+        Task SendEmailWithCode(string code, string email);
     }
 }
