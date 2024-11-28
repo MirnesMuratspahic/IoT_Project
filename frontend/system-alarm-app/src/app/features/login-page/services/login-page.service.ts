@@ -16,7 +16,7 @@ export class LoginPageService {
 
   login(data: LoginData): Observable<string> {
     const headers = { 'Content-Type': 'application/json' };
-    return this.http.post<string>(this.apiUrl, data, {headers} ).pipe(
+    return this.http.post<string>(this.apiUrl, data, {headers, responseType: 'text' as 'json'} ).pipe(
       catchError(this.handleError));
   }
 
@@ -25,7 +25,7 @@ export class LoginPageService {
       console.error('Login error:', error.error.name);
       return throwError(() => new Error(error.error.name));
     } else {
-      return throwError(() => new Error('An unexpected error occurred.'));
+      return throwError(() => new Error(error.error.name));
     }
   }
 }

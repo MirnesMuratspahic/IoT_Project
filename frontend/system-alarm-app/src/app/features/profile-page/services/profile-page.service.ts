@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders  } from '@angular/common/http';
 import { User } from '../models/user.model';
 import { environment } from '../../../environments/environment.development';
 import { ConnectDevice } from '../models/connectDevice.model';
@@ -22,30 +22,38 @@ export class ProfilePageService {
 
   constructor(private http: HttpClient) {}
 
+  createHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  }
+
   deleteDevice(deviceId: string): Observable<string> {
-    const headers = { 'Content-Type': 'application/json' };
+    const headers = this.createHeaders();
     const url = `${this.deleteDeviceUrl}/${deviceId}`;
     return this.http.delete<string>(url, { headers});
   }
 
   getUserInformations(email: string): Observable<User> {
-    const headers = { 'Content-Type': 'application/json' };
+    const headers = this.createHeaders();
     return this.http.post<User>(this.getUserInfoUrl, JSON.stringify(email), {headers}).pipe(
       catchError(this.handleError));
   };
 
   getUserDevices(email: string): Observable<Device[] | string> {
-    const headers = { 'Content-Type': 'application/json' };
+    const headers = this.createHeaders();
     return this.http.post<Device[] | string>(this.getUserDevicesUrl, JSON.stringify(email), {headers});
   }
 
   connectDevice(connectDevice: ConnectDevice): Observable<string> {
-    const headers = { 'Content-Type': 'application/json' };
+    const headers = this.createHeaders();
     return this.http.post<string>(this.connectDeviceUrl, connectDevice, {headers, responseType: 'text' as 'json'});
   };
 
   getLastResponse(deviceId: string): Observable<DeviceResponse | string> {
-    const headers = { 'Content-Type': 'application/json' };
+    const headers = this.createHeaders();
     return this.http.post(this.reciveResponseUrl, JSON.stringify(deviceId), { headers, responseType: 'text' })
       .pipe(
         map(response => {

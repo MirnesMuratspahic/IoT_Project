@@ -39,12 +39,11 @@ export class LoginPageComponent {
 
       this.loginService.login(loginData).subscribe(
         (data) => {
-          console.log('Login successful', data);
           localStorage.setItem('token', data);
-          this.errorMessage = null;
           this.router.navigate(['/profile']);
         },
         (error) => {
+          console.log(error);
           this.errorMessage = error.message;
         }
       )

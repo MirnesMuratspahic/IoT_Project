@@ -191,8 +191,8 @@ namespace AlarmSystem.Services
             List<Claim> _claims = new List<Claim>()
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                new Claim("Role", user.Role),
-                new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString())
+                new Claim(ClaimTypes.Role , user.Role),
+                new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.Now.ToUnixTimeSeconds().ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("AppSettings:Token").Value!));

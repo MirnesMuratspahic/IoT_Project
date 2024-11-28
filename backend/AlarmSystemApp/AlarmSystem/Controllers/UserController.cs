@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using AlarmSystem.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AlarmSystem.Controllers
 {
@@ -14,6 +15,7 @@ namespace AlarmSystem.Controllers
         {
             userService = _userService;
         }
+
 
         [HttpPost("Registration")]
         public async Task<IActionResult> UserRegistration(dtoUserRegistration user)
@@ -29,7 +31,7 @@ namespace AlarmSystem.Controllers
         {
             var (errorStatus , token) = await userService.UserLogin(user);
             if (errorStatus.Status == true)
-                return BadRequest(new {name = errorStatus.Name });
+                return BadRequest(new { name = errorStatus.Name });
             return Ok(token);
 
         }
@@ -52,6 +54,7 @@ namespace AlarmSystem.Controllers
                 return BadRequest(errorStatus.Name);
             return Ok(errorStatus.Name);
         }
+
 
         [HttpPost("AcceptUserCode")]
         public async Task<IActionResult> AcceptUserCode(dtoUserCode dtoUserCode)
