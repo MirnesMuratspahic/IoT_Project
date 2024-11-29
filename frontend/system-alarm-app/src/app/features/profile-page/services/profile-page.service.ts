@@ -38,18 +38,17 @@ export class ProfilePageService {
 
   getUserInformations(email: string): Observable<User> {
     const headers = this.createHeaders();
-    return this.http.post<User>(this.getUserInfoUrl, JSON.stringify(email), {headers}).pipe(
-      catchError(this.handleError));
+    return this.http.post<User>(this.getUserInfoUrl, JSON.stringify(email), {headers}).pipe(catchError(this.handleError));
   };
 
   getUserDevices(email: string): Observable<Device[] | string> {
     const headers = this.createHeaders();
-    return this.http.post<Device[] | string>(this.getUserDevicesUrl, JSON.stringify(email), {headers});
+    return this.http.post<Device[] | string>(this.getUserDevicesUrl, JSON.stringify(email), {headers}).pipe(catchError(this.handleError));;
   }
 
   connectDevice(connectDevice: ConnectDevice): Observable<string> {
     const headers = this.createHeaders();
-    return this.http.post<string>(this.connectDeviceUrl, connectDevice, {headers, responseType: 'text' as 'json'});
+    return this.http.post<string>(this.connectDeviceUrl, connectDevice, {headers}).pipe(catchError(this.handleError));
   };
 
   getLastResponse(deviceId: string): Observable<DeviceResponse | string> {
@@ -67,14 +66,11 @@ export class ProfilePageService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    // U ovom slučaju ako dođe do greške, vrati grešku kao throwError
     if (error.status === 400) {
-      // Obrada specifične greške (BadRequest)
-      console.error('Greška sa uređajem:', error.error);  // Možete logovati ili obraditi detalje greške
+      return throwError(() => ({ status: error.status, message: error.error.name || 'Error occured!'}));
     } else {
-      console.error('Neuspešan poziv:', error);
+      return throwError(() => ({ status: error.status, message: 'Error occured!' }));
     }
-    return throwError(() => new Error('Došlo je do greške!'));  // Povratak generičke greške
   }
 
   

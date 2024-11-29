@@ -30,13 +30,13 @@ namespace AlarmSystem.Controllers
 
 
         [Authorize(Roles = "Admin")]
-        [HttpGet("AddDevice")]
-        public async Task<IActionResult> AddDevice()
+        [HttpPost("AddDevice/{number}")]
+        public async Task<IActionResult> AddDevice([FromRoute] int number)
         {
-            var (error, device) = await deviceService.AddDevice();
+            var (error, devices) = await deviceService.AddDevice(number);
             if (error.Status == true)
                 return BadRequest(new { name = error.Name });
-            return Ok(device);  
+            return Ok(devices);  
         }
 
         [Authorize(Roles = "User")]
@@ -46,7 +46,7 @@ namespace AlarmSystem.Controllers
             var error = await deviceService.ConnectDevice(dtoUserDevice);
             if (error.Status == true)
                 return BadRequest(new { name = error.Name });
-            return BadRequest(new { message = error.Name });
+            return Ok(new { message = error.Name });
         }
 
 
@@ -56,7 +56,7 @@ namespace AlarmSystem.Controllers
             var error = await deviceService.ReciveDeviceResponse(deviceResponse);
             if (error.Status == true)
                 return BadRequest(new { name = error.Name });
-            return BadRequest(new { message = error.Name });
+            return Ok(new { message = error.Name });
         }
 
         //[HttpGet("Email")]
@@ -94,6 +94,16 @@ namespace AlarmSystem.Controllers
             if (error.Status == true)
                 return BadRequest(new { name = error.Name });
             return Ok(new {message = error.Name });
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("DeleteDeviceAdmin/{deviceId}")]
+        public async Task<IActionResult> DeleteDeviceAdmin([FromRoute] Guid deviceId)
+        {
+            var error = await deviceService.DeleteDeviceAdmin(deviceId);
+            if (error.Status == true)
+                return BadRequest(new { name = error.Name });
+            return Ok(new { message = error.Name });
         }
 
     }

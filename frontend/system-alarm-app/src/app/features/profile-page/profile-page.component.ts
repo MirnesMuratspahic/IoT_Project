@@ -134,14 +134,13 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
   deleteDevice(deviceId: string) {
     this.profilePageService.deleteDevice(deviceId).subscribe(
-      (data: string) => {
+      (data: any) => {
           this.getDevices();
           console.log(this.devices);
-          this.toastrService.success("Uspješno obrisano!");
+          this.toastrService.success(data.message);
       },
       (error) => {
-        console.error('Greška pri brisanju uređaja:', error);
-        this.toastrService.error("Greška prilikom brisanja!");
+        this.toastrService.error(error.message);
       }
     );
   }
@@ -149,16 +148,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   connectNewDevice(deviceId : string){
     this.connectDevice.deviceId = deviceId;
     this.connectDevice.userEmail = this.userEmail;
-    console.log(this.connectDevice.userEmail);
     this.profilePageService.connectDevice(this.connectDevice).subscribe(
-      (data: string) => {
+      (data: any) => {
           console.log(data);
-          this.toastrService.success("Uspjesno dodano!");
+          this.toastrService.success(data.message);
           this.getDevices();
         },
       (error) => {
         console.log(error);
-        this.toastrService.error(error.error);
+        this.toastrService.error(error.message);
       }
     )
   }

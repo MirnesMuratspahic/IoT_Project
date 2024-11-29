@@ -1,0 +1,21 @@
+.navbar-nav {
+  .nav-item {
+    margin: 5px 0;
+
+    .nav-link {
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+
+      &:hover {
+        background-color: #343a40;
+        color: #ffd700;
+      }
+
+      &.active {
+        background-color: #495057;
+        color: #fff;
+      }
+    }
+  }
+}

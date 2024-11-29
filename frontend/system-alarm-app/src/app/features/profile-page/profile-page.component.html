@@ -1,4 +1,8 @@
 <body>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  </head>
+
   <div>
     <!-- Navbar -->
     <app-navbar></app-navbar>
@@ -107,7 +111,9 @@
             </div>
 
             <div class="d-flex justify-content-end">
-              <button class="btn btn-outline-danger b-2 custom-button" (click)="deleteDevice(device.deviceId)">Delete</button>
+              <button class="btn btn-danger" (click)="deleteDevice(device.deviceId)">
+                <i class="fa fa-trash"></i>
+              </button>
             </div>
           </div>
           <div *ngIf="!deviceResponses.get(device.deviceId)">

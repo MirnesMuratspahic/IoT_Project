@@ -46,29 +46,32 @@ namespace AlarmSystem.Services
         }
 
 
-        public async Task<(ErrorProvider, Device)> AddDevice()
+        public async Task<(ErrorProvider, List<Device>)> AddDevice(int number)
         {
-
-            var device = new Device()
+            for (int i = 0; i < number; i++)
             {
-                DeviceId = Guid.NewGuid(),
-                Name = await GenerateDeviceName(),
-                Status = "Inactive",
-                RegisteredAt = DateTime.Now
-            };
+                var device = new Device()
+                {
+                    DeviceId = Guid.NewGuid(),
+                    Name = await GenerateDeviceName(),
+                    Status = "Inactive",
+                    RegisteredAt = DateTime.Now
+                };
 
-            await dbContext.Devices.AddAsync(device);
-            await dbContext.SaveChangesAsync();
-            
-            return (error, device);
+                await dbContext.Devices.AddAsync(device);
+                await dbContext.SaveChangesAsync();
+            }
+
+            var devices = await dbContext.Devices.ToListAsync();
+
+            return (error, devices);
 
         }
 
         private async Task<string> GenerateDeviceName()
         {
             var lastDevice = await dbContext.Devices
-                .Where(d => d.Name.StartsWith("Temperature"))
-                .OrderByDescending(d => d.Name)
+                .OrderByDescending(d => d.RegisteredAt)
                 .FirstOrDefaultAsync();
 
             if (lastDevice != null)
@@ -261,6 +264,28 @@ namespace AlarmSystem.Services
 
             deviceFromDatabase.Device.Status = "Inactive";
             dbContext.UserDevices.Remove(deviceFromDatabase);
+            await dbContext.SaveChangesAsync();
+
+            error = new ErrorProvider()
+            {
+                Status = false,
+                Name = "Successfully removed!"
+            };
+
+            return error;
+        }
+
+        public async Task<ErrorProvider> DeleteDeviceAdmin(Guid deviceId)
+        {
+            if (deviceId == null)
+                return defaultError;
+
+            var deviceFromDatabase = await dbContext.Devices.FirstOrDefaultAsync(x=> x.DeviceId == deviceId);
+
+            if (deviceFromDatabase == null)
+                return deviceNotFoundError;
+
+            dbContext.Devices.Remove(deviceFromDatabase);
             await dbContext.SaveChangesAsync();
 
             error = new ErrorProvider()

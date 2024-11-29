@@ -21,11 +21,11 @@ export class LoginPageService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    if (error.status === 400 && error.error && error.error.name) {
+    if (error.status === 400) {
       console.error('Login error:', error.error.name);
       return throwError(() => new Error(error.error.name));
     } else {
-      return throwError(() => new Error(error.error.name));
+      return throwError(() => new Error(error.error.message));
     }
   }
 }

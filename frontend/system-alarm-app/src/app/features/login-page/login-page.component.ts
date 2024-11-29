@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { LoginPageService } from './services/login-page.service';
 import { LoginData } from './models/login-data.model';
 import { error } from 'console';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +26,8 @@ export class LoginPageComponent {
   constructor(
     private fb: FormBuilder,
     private loginService: LoginPageService,
-    private router: Router
+    private router: Router,
+    private auth: AuthService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -40,7 +42,11 @@ export class LoginPageComponent {
       this.loginService.login(loginData).subscribe(
         (data) => {
           localStorage.setItem('token', data);
-          this.router.navigate(['/profile']);
+          const role = this.auth.getRoleFromToken();
+          if(role === 'User')
+            this.router.navigate(['/profile']);
+          else if(role === 'Admin')
+            this.router.navigate(['/admin'])
         },
         (error) => {
           console.log(error);

@@ -1,6 +1,6 @@
 export interface Device {
     deviceId: string,
     name: string,
-    registeredAtt: Date,
+    registeredAt: Date,
     status: string
 };
