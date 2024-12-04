@@ -49,7 +49,7 @@ namespace AlarmSystem.Controllers
             return Ok(new { message = error.Name });
         }
 
-
+        [Authorize(Roles = "Device")]
         [HttpPost("ReciveDeviceResponse")]
         public async Task<IActionResult> ReciveDeviceResponse(DeviceResponse deviceResponse)
         {
