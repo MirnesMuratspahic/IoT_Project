@@ -69,7 +69,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let device of devices">
-        <td>{{ device.deviceId }}</td>
+        <td>{{ device.deviceId.toLocaleUpperCase() }}</td>
         <td>{{ device.name }}</td>
         <td>{{ device.status }}</td>
         <td>{{ device.registeredAt | date: 'medium' }}</td>

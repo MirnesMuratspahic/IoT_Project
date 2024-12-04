@@ -77,6 +77,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Urls.Add("http://192.168.0.9:7155");
+app.Urls.Add("http://192.168.241.232:7155");
 
 app.Run();

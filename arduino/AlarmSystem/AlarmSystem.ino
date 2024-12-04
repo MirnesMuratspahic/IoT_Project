@@ -12,9 +12,9 @@
 
 DHT dht(DHTPIN, DHTTYPE); // Kreiranje objekta senzora
 
-const char* ssid = "UG99DB";      
-const char* password = "BD3C4877";    
-String deviceId = "0EC20056-FDC1-45CD-A10C-60C46571612F"; 
+const char* ssid = "Mirnes";      
+const char* password = "mirnes123";    
+String deviceId = "5A25D07B-670D-47DE-BCBF-C18D26038549"; 
 const char* header = "{\"alg\":\"HS256\",\"typ\":\"JWT\"}";
 String payload = "{\"sub\":\"" + deviceId + "\",\"iat\":1609459200,\"roles\":\"Device\"}";  // Koristimo String tip
 const char* secretKey = "xCgmgpqPadKTaUgWF8j4YX3DZP7cgzYPSkG7GhJYbCXkroJVGMR3R6LFxRP1xwl5";  
@@ -100,7 +100,7 @@ void sendDataToServer(String jwt) {
     HTTPClient http;
 
     // URL na koji šaljemo podatke
-    String serverUrl = "http://192.168.0.9:7155/Device/ReciveDeviceResponse";
+    String serverUrl = "http://192.168.241.232:7155/Device/ReciveDeviceResponse";
     http.begin(client, serverUrl); 
     http.addHeader("Content-Type", "application/json");
     http.addHeader("Authorization", "Bearer " + jwt);  // Koristimo ispravan JWT
