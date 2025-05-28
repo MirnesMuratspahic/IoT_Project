@@ -19,35 +19,34 @@ namespace AlarmSystem.Services
         {
             MailMessage mail = new MailMessage();
 
-            if(message == "Fire")
+            if (message == "Fire")
             {
-                message = "Poštovani, \n" + "\n" +
-                          "Temperatura u prostoru je trenutno porasla. Na osnovu trenutnih podataka, postoji mogućnost da se " +
-                          "razvije požar, te vas pozivamo da odmah provjerite stanje i preduzmete potrebne mjere opreza." + "\n" + "\n" +
-                          "S poštovanjem, \n" +
+                message = "Dear Sir/Madam,\n\n" +
+                          "The temperature in the area has risen. Based on the current data, there is a possibility of a fire developing, " +
+                          "so we urge you to immediately check the situation and take the necessary precautionary measures.\n\n" +
+                          "Sincerely,\n" +
                           "AlarmSystem";
             }
-            else if(message == "Motion")
+            else if (message == "Motion")
             {
-                message = "Poštovani, \n" + "\n" +
-                          "Detektovane su kretnje u prostoru. Postoji mogućnost provale unutar objekta,  " +
-                          "te vas pozivamo da odmah provjerite stanje i preduzmete potrebne mjere opreza." + "\n" + "\n" +
-                          "S poštovanjem, \n" +
+                message = "Dear Sir/Madam,\n\n" +
+                          "Motion has been detected in the area. There is a possibility of a break-in within the premises, " +
+                          "so we urge you to immediately check the situation and take the necessary precautionary measures.\n\n" +
+                          "Sincerely,\n" +
                           "AlarmSystem";
             }
 
 
-            // Podešavanje osnovnih parametara e-maila
             mail.From = new MailAddress(configuration["EmailAccountInformations:Email"]);
             mail.To.Add(userEmail);
-            mail.Subject = "Test Email Subject";
+            mail.Subject = "Alarm system notification";
             mail.Body = message; 
 
 
 
             SmtpClient smtpServer = new SmtpClient("smtp.gmail.com"); 
             smtpServer.Port = 587; 
-            smtpServer.Credentials = new NetworkCredential(configuration["EmailAccountInformations:Email"], configuration["EmailAccountInformations:Password"]);  // Tvoji podaci za prijavu
+            smtpServer.Credentials = new NetworkCredential(configuration["EmailAccountInformations:Email"], configuration["EmailAccountInformations:Password"]);
             smtpServer.EnableSsl = true;
 
             try
@@ -64,15 +63,15 @@ namespace AlarmSystem.Services
         {
             MailMessage mail = new MailMessage();
 
-            string message = "Poštovani, \n" + "\n" + 
-                            $"Vaš kod za potvrdu email adrese je sljedeći: {code} \n" + "\n" +
-                            "Link za potvrdu koda: http://localhost:4200/code \n" +
-                            "S poštovanjem, \n" +
-                            "AlarmSystem";
+            string message = "Dear Sir/Madam,\n\n" +
+                             $"Your email verification code is: {code}\n\n" +
+                             "Verification link: http://localhost:4200/code\n" +
+                             "Sincerely,\n" +
+                             "AlarmSystem";
 
             mail.From = new MailAddress(configuration["EmailAccountInformations:Email"]);
             mail.To.Add(email);
-            mail.Subject = "Potvrda email adrese";
+            mail.Subject = "Email Address Verification";
             mail.Body = message;
 
 

@@ -54,27 +54,27 @@
     </div>
   </div>
 
- <!-- Div za desktop prikaz -->
+
 <div class="container mt-4 desktop-view">
   <h2>Device List</h2>
-  <table class="table table-bordered table-striped">
+  <table class="table">
     <thead>
       <tr>
         <th>Device ID</th>
         <th>Name</th>
         <th>Status</th>
         <th>Registered At</th>
-        <th>Actions</th> <!-- Nova kolona za ikonu -->
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let device of devices">
         <td>{{ device.deviceId }}</td>
         <td>{{ device.name }}</td>
-        <td>{{ device.status }}</td>
+        <td [ngClass]="device.status === 'Active' ? 'text-success' : 'text-danger'">{{ device.status }}</td>
         <td>{{ device.registeredAt | date: 'medium' }}</td>
         <td class="text-center">
-          <!-- Ikona za brisanje uređaja -->
+
           <button (click)="deleteDevice(device.deviceId)" class="btn btn-danger">
             <i class="fa fa-trash"></i>
           </button>
@@ -84,21 +84,21 @@
   </table>
 </div>
 
-<!-- Div za mobilni prikaz -->
+
 <div class="container mt-4 mobile-view">
   <h2>Device List</h2>
-  <table class="table table-bordered table-striped">
+  <table class="table">
     <thead>
       <tr>
         <th>Device ID</th>
         <th>Status</th>
-        <th>Actions</th> <!-- Nova kolona za ikonu -->
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let device of devices">
         <td>{{ device.deviceId }}</td>
-        <td>{{ device.status }}</td>
+        <td [ngClass]="device.status === 'Active' ? 'text-success' : 'text-danger'">{{ device.status }}</td>
         <td class="text-center">
           <button (click)="deleteDevice(device.deviceId)" class="btn btn-danger">
             <i class="fa fa-trash"></i>
@@ -109,8 +109,8 @@
   </table>
 </div>
 
-  
-  
 
-    
+
+
+
 </body>

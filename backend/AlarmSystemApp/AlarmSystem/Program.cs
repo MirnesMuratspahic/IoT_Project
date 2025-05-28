@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Server.Kestrel.Https;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +47,7 @@ builder.Services.AddAuthorization(options =>
 });
 
 
+
 builder.Services.AddAuthorization();
 
 builder.Services.AddHttpContextAccessor();
@@ -77,6 +79,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Urls.Add("http://192.168.0.9:7155");
+app.Urls.Add("http://192.168.0.12:5031");
 
 app.Run();

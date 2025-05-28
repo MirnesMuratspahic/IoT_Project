@@ -178,7 +178,7 @@ namespace AlarmSystem.Services
 
             var userEmail = userDevice.User.Email;
 
-            if (deviceResponse.Temperature >= 20 && DateTime.Now - lastEmailSentTime > emailSendInterval)
+            if (deviceResponse.Temperature >= 15 && DateTime.Now - lastEmailSentTime > emailSendInterval)
             {
                 await emailService.SendEmail("Fire", userEmail);
                 lastEmailSentTime = DateTime.Now; 

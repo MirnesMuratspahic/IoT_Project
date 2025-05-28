@@ -1,131 +1,108 @@
 <body>
-  <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-  </head>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
 
-  <div>
-    <!-- Navbar -->
-    <app-navbar></app-navbar>
-  </div>
+<div>
+  <!-- Navbar -->
+  <app-navbar></app-navbar>
+</div>
 
-    <div class="d-flex justify-content-end me-4 mt-4">
-      <button class="btn btn-outline-success b-2 custom-button" data-bs-toggle="modal" data-bs-target="#newDeviceModal">New device</button>
-    </div>
+<!-- Akcija - New Device dugme -->
+<div class="d-flex justify-content-end me-4 mt-4">
+  <button class="btn btn-outline-success rounded-pill shadow-lg px-4 py-2" data-bs-toggle="modal" data-bs-target="#newDeviceModal">
+    <i class="fas fa-plus-circle me-2"></i>New device
+  </button>
+</div>
 
-  <!-- Modal -->
-    <div class="modal fade" id="newDeviceModal" #newDeviceModal tabindex="-1" aria-labelledby="newDeviceModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="newDeviceModalLabel">Add Device ID</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <!-- Sadržaj modala -->
-            <form>
-              <div class="mb-3">
-                <label for="deviceId" class="form-label">Device ID</label>
-                <input type="text" class="form-control" id="deviceId" [(ngModel)]="deviceId" (input)="onInputChange()" maxlength="36" name="deviceId" placeholder="Enter device ID">
-              </div>
-              <!-- Validacija -->
-              <p *ngIf="isGuidValid === 2"  class="text-success">Valid!</p>
-              <p *ngIf="isGuidValid === 3" class="text-danger">Invalid device ID!</p>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-success" [disabled]="isGuidValid !== 2" data-bs-dismiss="modal" (click)="connectNewDevice(deviceId)">Submit</button>
-          </div>
-        </div>
+<!-- Modal za dodavanje uređaja -->
+<div class="modal fade" id="newDeviceModal" #newDeviceModal tabindex="-1" aria-labelledby="newDeviceModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg border-0 rounded-3">
+      <div class="modal-header bg-gradient-primary text-white rounded-top">
+        <h5 class="modal-title" id="newDeviceModalLabel">Add New Device</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-    </div>
-
-  <div class="container mt-5">
-    <!-- User Informations -->
-    <div *ngIf="user" class="d-flex flex-column align-items-center">
-      <div class="card-1 p-3 text-center w-100" style="max-width: 500px;">
-        <div class="image">
-          <img
-            [src]="user.imageUrl ? user.imageUrl : 'https://cdn-icons-png.flaticon.com/512/10337/10337609.png'"
-            alt="Profilna slika"
-            class="rounded-circle mx-auto mt-3"
-            style="width: 150px; height: 150px; object-fit: cover"
-          />
-        </div>
-        <h4 class="mt-3 text-white">{{ user.firstName }} {{ user.lastName }}</h4>
-        <div class="card-body-2">
+      <div class="modal-body p-4">
+        <form>
           <div class="mb-3">
-            <label for="email" class="form-label text-white"><strong>Email:</strong></label>
-            <input
-              id="email"
-              type="text"
-              [(ngModel)]="user.email"
-              class="form-control"
-              readonly
-            />
+            <label for="deviceId" class="form-label fw-bold">Device ID</label>
+            <input type="text" class="form-control border-primary shadow-sm" id="deviceId" [(ngModel)]="deviceId" (input)="onInputChange()" maxlength="36" name="deviceId" placeholder="Enter device ID">
           </div>
-        </div>
+          <p *ngIf="isGuidValid === 2" class="text-success fw-bold"><i class="fas fa-check-circle me-1"></i>Valid!</p>
+          <p *ngIf="isGuidValid === 3" class="text-danger fw-bold"><i class="fas fa-times-circle me-1"></i>Invalid device ID!</p>
+        </form>
+      </div>
+      <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-success w-100 py-2" [disabled]="isGuidValid !== 2" data-bs-dismiss="modal" (click)="connectNewDevice(deviceId)">
+          <i class="fas fa-plug me-1"></i>Connect Device
+        </button>
       </div>
     </div>
+  </div>
+</div>
 
-    <!-- Devices Section -->
-    <div class="mt-4">
-      <div *ngFor="let device of devices" class="card mb-5 w-100">
-        <div class="card-header bg-warning text-white justify-content-between" id="device-list">
-          <h5>{{ device.name }}</h5>
-          <h5>ID: {{device.deviceId}}</h5>
-        </div>
-        <div class="card-body">
-          <div *ngIf="deviceResponses.get(device.deviceId) as details">
-            <!-- Temperature -->
-            <div class="mb-3 d-flex align-items-center">
-              <label for="temperature-{{ device.deviceId }}" class="form-label text-white flex-shrink-0"><strong>Temperature:</strong></label>
-              <input
-                id="temperature-{{ device.deviceId }}"
-                type="text"
-                [value]="details.temperature + ' °C'"
-                class="form-control w-100 ms-4"
-                readonly
-              />
-            </div>
-            <!-- Motion -->
-            <div class="mb-3 d-flex align-items-center">
-              <label for="motion-{{ device.deviceId }}" class="form-label text-white flex-shrink-0"><strong>Motion status:</strong></label>
-              <input
-                id="motion-{{ device.deviceId }}"
-                type="text"
-                [value]="details.motionDetected ? 'Detektovan pokret' : 'Nema pokreta'"
-                class="form-control w-100 ms-3"
-                readonly
-              />
-            </div>
-            <!-- Date and Time -->
-            <div class="mb-3 d-flex align-items-center">
-              <label for="readingDate-{{ device.deviceId }}" class="form-label text-white flex-shrink-0"><strong>Reading date:</strong></label>
-              <input
-                id="readingDate-{{ device.deviceId }}"
-                type="text"
-                [value]="details.readingDateTime | date: 'dd.MM.yyyy HH:mm:ss'"
-                class="form-control w-100 ms-4"
-                readonly
-              />
-            </div>
-
-            <div class="d-flex justify-content-end">
-              <button class="btn btn-danger" (click)="deleteDevice(device.deviceId)">
-                <i class="fa fa-trash"></i>
-              </button>
-            </div>
-          </div>
-          <div *ngIf="!deviceResponses.get(device.deviceId)">
-            <p class="text-white">Nema zabiljezenih podataka</p>
-          </div>
-        </div>
+<!-- Korisničke informacije -->
+<div class="container mt-5">
+  <div *ngIf="user" class="d-flex flex-column align-items-center">
+    <div class="card-1 p-4 text-center w-100 rounded-4 shadow-lg" style="max-width: 500px; background: linear-gradient(135deg, #1e1e2f, #343a40);">
+      <div class="image mb-3">
+        <img [src]="user.imageUrl ? user.imageUrl : 'https://cdn-icons-png.flaticon.com/512/10337/10337609.png'"
+             alt="Profilna slika"
+             class="rounded-circle shadow border border-4 border-primary"
+             style="width: 150px; height: 150px; object-fit: cover">
+      </div>
+      <h3 class="text-white fw-bold">{{ user.firstName }} {{ user.lastName }}</h3>
+      <div class="card-body-2 mt-3 text-start text-white">
+        <label for="email" class="form-label fw-bold">Email:</label>
+        <input id="email" type="text" [(ngModel)]="user.email" class="form-control bg-dark text-white border-primary shadow-sm" readonly>
       </div>
     </div>
   </div>
 
-  <!-- Loading State for User Data -->
-  <div *ngIf="!user" class="d-flex justify-content-center align-items-center vh-100">
-    <p>Učitavanje podataka o korisniku...</p>
+  <!-- Lista uređaja -->
+  <div class="device-list mt-4">
+    <div *ngFor="let device of devices" class="device-card card shadow-lg rounded-4">
+      <div class="card-header bg-gradient-warning text-white">
+        <h5 class="mb-2"><i class="fas fa-thermometer-half me-2"></i>{{ device.name }}</h5>
+        <span class="badge text-white">
+          <i class="fas fa-key me-1"></i>{{ device.deviceId }}
+        </span>
+      </div>
+      <div class="card-body text-dark">
+        <ng-container *ngIf="deviceResponses.get(device.deviceId) as details">
+          <div class="info-row mb-3 d-flex align-items-center">
+            <i class="fas fa-temperature-high me-2 text-danger"></i>
+            <strong class="flex-shrink-0 w-50 text-white">Temperature:</strong>
+            <span class="badge bg-info text-white flex-grow-1 ms-2">{{ details.temperature }} °C</span>
+          </div>
+          <div class="info-row mb-3 d-flex align-items-center">
+            <i class="fas fa-running me-2 text-success"></i>
+            <strong class="flex-shrink-0 w-50 text-white">Motion:</strong>
+            <span class="badge " [ngClass]="details.motionDetected ? 'bg-success' : 'bg-secondary'">
+            {{ details.motionDetected ? 'Motion detected' : 'No motion' }}
+          </span>
+          </div>
+          <div class="info-row mb-3 d-flex align-items-center">
+            <i class="fas fa-clock me-2 text-warning"></i>
+            <strong class="flex-shrink-0 w-25 text-white">Date:</strong>
+            <span>{{ details.readingDateTime | date: 'dd.MM.yyyy HH:mm:ss' }}</span>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-outline-danger btn-sm" (click)="deleteDevice(device.deviceId)">
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </div>
+        </ng-container>
+      </div>
+    </div>
   </div>
+
+</div>
+
+<!-- Učitavanje -->
+<div *ngIf="!user" class="d-flex justify-content-center align-items-center vh-100">
+  <div class="spinner-border text-primary" role="status"></div>
+  <p class="ms-3">Loading user data...</p>
+</div>
 </body>

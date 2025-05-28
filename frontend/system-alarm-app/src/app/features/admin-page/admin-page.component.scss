@@ -1,18 +1,84 @@
 .desktop-view {
-    display: block; 
-  }
-  
-  .mobile-view {
-    display: none; 
-  }
-  
+  display: block !important;
+}
 
-  @media (max-width: 768px) {
-    .desktop-view {
-      display: none; 
-    }
-  
-    .mobile-view {
-      display: block; 
-    }
+.mobile-view {
+  display: none !important;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  background-color: #2f2f2f; /* tamno siva pozadina */
+  color: #e0e0e0;
+  font-weight: 600;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+thead tr {
+  background: linear-gradient(90deg, #ff7e5f, #feb47b);
+  color: #fff;
+}
+
+thead th {
+  padding: 15px 20px;
+  text-align: left;
+  font-weight: 700;
+  border-bottom: 2px solid #4a4a4a;
+}
+
+tbody tr:hover {
+  background: linear-gradient(90deg, #ff7e5f, #feb47b, #ff7e5f);
+  color: #1a1a1a;
+}
+
+tbody td {
+  padding: 14px 20px;
+  vertical-align: middle;
+  color: black;
+}
+
+.text-success {
+  color: green !important;
+}
+
+.text-danger {
+  color: red !important;
+}
+
+.btn-danger {
+  background: linear-gradient(90deg, #ff7e5f, #feb47b);
+  border: none;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+  cursor: pointer;
+  color: #1a1a1a;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(90deg, #feb47b, #ff7e5f);
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .desktop-view {
+    display: none !important;
   }
+
+  .mobile-view {
+    display: block !important;
+  }
+
+  .mobile-view table {
+    border-radius: 8px;
+    font-weight: 600;
+    background-color: #3b3b3b;
+  }
+}
