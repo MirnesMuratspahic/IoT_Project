@@ -8,14 +8,14 @@
   <app-navbar></app-navbar>
 </div>
 
-<!-- Akcija - New Device dugme -->
+
 <div class="d-flex justify-content-end me-4 mt-4">
   <button class="btn btn-outline-success rounded-pill shadow-lg px-4 py-2" data-bs-toggle="modal" data-bs-target="#newDeviceModal">
     <i class="fas fa-plus-circle me-2"></i>New device
   </button>
 </div>
 
-<!-- Modal za dodavanje uređaja -->
+
 <div class="modal fade" id="newDeviceModal" #newDeviceModal tabindex="-1" aria-labelledby="newDeviceModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content shadow-lg border-0 rounded-3">
@@ -42,7 +42,6 @@
   </div>
 </div>
 
-<!-- Korisničke informacije -->
 <div class="container mt-5">
   <div *ngIf="user" class="d-flex flex-column align-items-center">
     <div class="card-1 p-4 text-center w-100 rounded-4 shadow-lg" style="max-width: 500px; background: linear-gradient(135deg, #1e1e2f, #343a40);">
@@ -60,7 +59,6 @@
     </div>
   </div>
 
-  <!-- Lista uređaja -->
   <div class="device-list mt-4">
     <div *ngFor="let device of devices" class="device-card card shadow-lg rounded-4">
       <div class="card-header bg-gradient-warning text-white">
@@ -100,7 +98,6 @@
 
 </div>
 
-<!-- Učitavanje -->
 <div *ngIf="!user" class="d-flex justify-content-center align-items-center vh-100">
   <div class="spinner-border text-primary" role="status"></div>
   <p class="ms-3">Loading user data...</p>

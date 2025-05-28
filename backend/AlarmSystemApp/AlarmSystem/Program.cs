@@ -61,7 +61,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        // Ovdje možeš postaviti URL za Swagger interfejs
+        // Ovdje moï¿½eï¿½ postaviti URL za Swagger interfejs
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
     });
 }
